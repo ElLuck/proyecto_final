@@ -2,10 +2,55 @@
 {% load static %}
 
 {% block content %}
-<h2>{% if object %}Editar Producto{% else %}Crear Producto{% endif %}</h2>
-<form method="post" enctype="multipart/form-data">
+<div class="container">
+  <header>
+    <h1>Crear Nuevo Producto</h1>
+  </header>
+
+  <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Guardar</button>
-</form>
+    
+    <div class="form-group">
+      <label for="titulo">Título del Producto</label>
+      <input type="text" class="form-control" id="titulo" name="titulo" required>
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="precio">Precio</label>
+      <input type="number" class="form-control" id="precio" name="precio" step="0.01" required>
+    </div>
+
+    <div class="form-group">
+      <label for="cantidad">Cantidad</label>
+      <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+    </div>
+
+    <div class="form-group">
+      <label for="categoria">Categoría</label>
+      <select class="form-control" id="categoria" name="categoria">
+        <option value="">Seleccione una categoría</option>
+        {% for categoria in categorias %}
+          <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="nueva_categoria">O crear nueva categoría</label>
+      <input type="text" class="form-control" id="nueva_categoria" name="nueva_categoria" placeholder="Escriba el nombre de una nueva categoría">
+    </div>
+
+    <div class="form-group">
+      <label for="imagen">Imagen del Producto</label>
+      <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Crear Producto</button>
+  </form>
+</div>
 {% endblock %}

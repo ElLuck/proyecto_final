@@ -2,30 +2,74 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
-  <header>
+<div class="container mt-4">
+  <header class="mb-4">
       <h1>Bienvenido al Panel de Administración</h1>
   </header>
-  
 
   <!-- Estadísticas -->
-  <section class="stats">
-      <div class="stat-card">
-          <h2>Total Categorías</h2>
-          <p>{{ total_categorias }}</p>
+  <section class="stats row mb-4">
+      <div class="col-md-3 mb-3">
+          <div class="stat-card bg-primary text-white p-4 rounded">
+              <h4>Total Categorías</h4>
+              <p>{{ total_categorias }}</p>
+          </div>
       </div>
-      <div class="stat-card">
-          <h2>Total Productos</h2>
-          <p>{{ total_productos }}</p>
+      <div class="col-md-3 mb-3">
+          <div class="stat-card bg-success text-white p-4 rounded">
+              <h4>Total Productos</h4>
+              <p>{{ total_productos }}</p>
+          </div>
       </div>
-      <div class="stat-card">
-          <h2>Total Pedidos</h2>
-          <p>{{ total_pedidos }}</p>
+      <div class="col-md-3 mb-3">
+          <div class="stat-card bg-warning text-white p-4 rounded">
+              <h4>Total Pedidos</h4>
+              <p>{{ total_pedidos }}</p>
+          </div>
       </div>
-      <div class="stat-card">
-          <h2>Total Ventas</h2>
-          <p>${{ total_ventas }}</p>
+      <div class="col-md-3 mb-3">
+          <div class="stat-card bg-danger text-white p-4 rounded">
+              <h4>Total Ventas</h4>
+              <p>${{ total_ventas }}</p>
+          </div>
       </div>
   </section>
+
+  <!-- Mostrar productos existentes -->
+  <h3 class="mb-4">Productos Existentes</h3>
+  <table class="table table-striped table-bordered table-hover">
+      <thead class="thead-dark">
+          <tr>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Acciones</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for producto in productos %}
+              <tr>
+                  <td>
+                      {% if producto.imagen %}
+                          <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" style="width: 50px; height: 50px; object-fit: cover;">
+                      {% else %}
+                          <img src="{% static 'images/no-image.jpg' %}" alt="Sin imagen" style="width: 50px; height: 50px; object-fit: cover;">
+                      {% endif %}
+                  </td>
+                  <td>{{ producto.titulo }}</td>
+                  <td>{{ producto.categoria.nombre }}</td>
+                  <td>${{ producto.precio }}</td>
+                  <td>{{ producto.cantidad }}</td>
+                  <td>
+              </tr>
+          {% empty %}
+              <tr>
+                  <td colspan="6" class="text-center">No hay productos disponibles.</td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
 </div>
 {% endblock %}

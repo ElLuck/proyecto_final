@@ -398,75 +398,55 @@
           <!-- Sidebar navigation-->
           <nav class="sidebar-nav">
             <ul id="sidebarnav" class="pt-4">
+              <!-- Enlace al panel principal -->
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/panel_principal/"
+                  href="{% url 'panel_principal' %}"
                   aria-expanded="false"
-                  ><i class="mdi mdi-view-dashboard"></i
-                  ><span class="hide-menu">Dashboard</span></a
-                >
+                  ><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span></a>
               </li>
+      
+              <!-- Enlace a la lista de categorías -->
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/producto_list/"
+                  href="{% url 'lista_categorias' %}"
                   aria-expanded="false"
-                  ><i class="mdi mdi-chart-bubble"></i
-                  ><span class="hide-menu">Widgets</span></a
-                >
+                  ><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Categorías</span></a>
               </li>
+      
+              <!-- Enlace a la lista de productos -->
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/tables/"
+                  href="{% url 'lista_productos_admin' %}"
                   aria-expanded="false"
-                  ><i class="mdi mdi-border-inside"></i
-                  ><span class="hide-menu">Tables</span></a
-                >
+                  ><i class="mdi mdi-border-inside"></i><span class="hide-menu">Productos</span></a>
               </li>
-
+      
+              <!-- Enlace para agregar un nuevo producto -->
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="/buttons/"
+                  href="{% url 'crear_producto' %}"
                   aria-expanded="false"
-                  ><i class="mdi mdi-relative-scale"></i
-                  ><span class="hide-menu">Buttons</span></a
-                >
+                  ><i class="mdi mdi-relative-scale"></i><span class="hide-menu">Agregar Producto</span></a>
+              </li>
+      
+              <!-- Enlace para crear una nueva categoría -->
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{% url 'crear_categoria' %}"
+                  aria-expanded="false"
+                  ><i class="mdi mdi-add-box"></i><span class="hide-menu">Crear Categoría</span></a>
               </li>
               
-             
-              <li class="sidebar-item">
-                <a
-                  class="sidebar-link has-arrow waves-effect waves-dark"
-                  href="javascript:void(0)"
-                  aria-expanded="false"
-                  ><i class="mdi mdi-move-resize-variant"></i
-                  ><span class="hide-menu">Addons </span></a
-                >
-                <ul aria-expanded="false" class="collapse first-level">
-                  <li class="sidebar-item">
-                    <a href="/gallery/" class="sidebar-link"
-                      ><i class="mdi mdi-multiplication-box"></i
-                      ><span class="hide-menu"> Gallery </span></a
-                    >
-                  </li>
-                  
-                  <li class="sidebar-item">
-                    <a href="/invoice/" class="sidebar-link"
-                      ><i class="mdi mdi-bulletin-board"></i
-                      ><span class="hide-menu"> Invoice </span></a
-                    >
-                  </li>
-                </ul>
-              </li>
+            </ul>
           </nav>
-          <!-- End Sidebar navigation -->
         </div>
-        <!-- End Sidebar scroll-->
       </aside>
-
       {% block content %}
 
 
