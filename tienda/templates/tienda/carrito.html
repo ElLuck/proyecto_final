@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title  >Carrito de Compras</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'tienda/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .alert {
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .productos-carrito ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .productos-carrito li {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .productos-carrito h3 {
+            margin: 0;
+        }
+
+        .productos-carrito p {
+            margin: 5px 0;
+        }
+
+        .btn-eliminar {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        .btn-eliminar:hover {
+            background-color: #c82333;
+        }
+
+        .total-carrito {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .total-carrito strong {
+            font-weight: bold;
+        }
+
+        .btn-realizar-pedido {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        .btn-realizar-pedido:hover {
+            background-color: #218838;
+        }
+
+        .btn-cotizacion {
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            display: block;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .btn-cotizacion:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Carrito de Compras</h1>
+
+        <!-- Mostrar mensaje de éxito o error -->
+        {% if messages %}
+            <div class="alert">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if carrito %}
+            <div class="productos-carrito">
+                <ul>
+                    {% for producto_id, detalles in carrito.items %}
+                        <li>
+                            <div>
+                                <h3>{{ detalles.titulo }}</h3>
+                                <p>Precio: ${{ detalles.precio }}</p>
+                                <p>Cantidad: {{ detalles.cantidad }}</p>
+                            </div>
+
+                            <!-- Botón para eliminar producto del carrito -->
+                            <form action="{% url 'eliminar_del_carrito' producto_id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-eliminar">Eliminar</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Mostrar el total de los productos en el carrito -->
+            <div class="total-carrito">
+                <p><strong>Total de productos:</strong> {{ total_productos }}</p>
+                <p><strong>Total a pagar:</strong> ${{ total_precio }}</p>
+            </div>
+
+            <!-- Botón para realizar pedido, solo si el usuario está autenticado -->
+            {% if user.is_authenticated %}
+            <form action="{% url 'realizar_pedido' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn-realizar-pedido">Realizar Pedido</button>
+            </form>
+            {% else %}
+                <p>Debes <a href="{% url 'login' %}">iniciar sesión</a> para realizar un pedido.</p>
+            {% endif %}
+        {% else %}
+            <p>Tu carrito está vacío.</p>
+        {% endif %}
+
+        <!-- Volver a la tienda -->
+        <a href="{% url 'lista_productos' %}" class="btn-cotizacion">Volver a la tienda</a>
+    </div>
+
+</body>
+</html>

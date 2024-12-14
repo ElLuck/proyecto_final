@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block content1 %}
+<div class="container">
+    <h2>Detalles del Pedido #{{ pedido.id }}</h2>
+    
+    <!-- Estado del pedido -->
+    <p><strong>Estado:</strong> 
+        {% if pedido.estado == 'aceptado' %}
+            <span style="color: green;">Aceptado</span>
+        {% elif pedido.estado == 'rechazado' %}
+            <span style="color: red;">Rechazado</span>
+        {% else %}
+            {{ pedido.estado }}
+        {% endif %}
+    </p>
+
+    <!-- Mostrar productos de forma formateada -->
+    <h3>Productos solicitados:</h3>
+    <ul>
+        {% if pedido.productos %}
+            {% for item in pedido.productos %}
+                <li style="display: flex; gap: 20px; margin-bottom: 15px;">
+                    <!-- Imagen del producto -->
+                    <img src="{{ item.imagen.url }}" alt="{{ item.titulo }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+
+                    <!-- Detalles del producto: nombre, precio y cantidad -->
+                    <div>
+                        <p><strong>Nombre:</strong> {{ item.titulo }}</p>
+                        <p><strong>Precio:</strong> ${{ item.precio }}</p>
+                        <p><strong>Cantidad:</strong> {{ item.cantidad }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        {% else %}
+            <p>No hay productos en este pedido.</p>
+        {% endif %}
+    </ul>
+
+    <!-- Notificado -->
+    <p><strong>Notificado:</strong> 
+        {% if pedido.notificado %}
+            Sí
+        {% else %}
+            No
+        {% endif %}
+    </p>
+
+    <!-- Total del pedido -->
+    <p><strong>Total:</strong> ${{ pedido.total }}</p>
+
+    <!-- Botón de aceptar pedido (solo si está pendiente) -->
+    {% if pedido.estado == 'pendiente' %}
+        <form action="{% url 'aceptar_pedido' pedido.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Aceptar Pedido</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

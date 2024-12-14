@@ -1,0 +1,28 @@
+<html>
+<body>
+    <h1>Reporte de Ventas</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Total</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas %}
+                <tr>
+                    <td>{{ venta.producto }}</td>
+                    <td>{{ venta.cantidad }}</td>
+                    <td>{{ venta.precio_unitario }}</td>
+                    <td>{{ venta.total }}</td>
+                    <td>{{ venta.fecha }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Total de ventas: {{ total_ventas }}</h2>
+</body>
+</html>

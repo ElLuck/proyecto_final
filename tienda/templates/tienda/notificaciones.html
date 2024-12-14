@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block header %}
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white" style="font-family: Dancing Script;">
+            <h1 class="display-4 fw-bolder">Notificaciones</h1>
+        </div>
+    </div>
+</header>
+{% endblock %}   
+
+{% block content1 %}
+
+
+<div class="container">
+    {% if pedidos %}
+        <ul>
+            {% for pedido in pedidos %}
+                <li>
+                    Pedido #{{ pedido.id }}:
+                    <ul>
+                        {% for producto in pedido.productos.all %}
+                            <li>
+                                Nombre: {{ producto.titulo }} | Precio: ${{ producto.precio }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {% if pedido.estado == 'aceptado' %}
+                        <span style="color: green;">Aceptado</span>
+                    {% elif pedido.estado == 'rechazado' %}
+                        <span style="color: red;">Rechazado</span>
+                    {% endif %}
+                    <br>
+                    <strong>Total: ${{ pedido.total }}</strong>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tienes notificaciones en este momento.</p>
+    {% endif %}
+</div>
+{% endblock %}
