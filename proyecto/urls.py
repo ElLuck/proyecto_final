@@ -18,10 +18,11 @@ from django.urls import path
 from django.conf import settings
 from core import views as core_views
 from tienda import views as tienda_views
+from panel_admin import views as panel_admin_views
 from django.contrib.auth import views as auth_views
 
-
 urlpatterns = [
+    # Rutas principales de la aplicación
     path('admin/', admin.site.urls),
     path('', core_views.index, name='index'),
     path('about/', core_views.about, name='about'),
@@ -39,9 +40,17 @@ urlpatterns = [
     path('notificaciones/', tienda_views.notificaciones, name='notificaciones'),
     path('pedido/<int:pedido_id>/', tienda_views.detalles_pedido, name='detalle_pedido'),
     path('pedido/aceptar/<int:pedido_id>/', tienda_views.aceptar_pedido, name='aceptar_pedido'),
-    
+
+    # Panel de administración personalizado
+    path('panel_principal/', panel_admin_views.panel_principal, name='panel_principal'),
+    path('categorias/', panel_admin_views.lista_categorias, name='lista_categorias'),
+    path('categorias/crear/', panel_admin_views.crear_categoria, name='crear_categoria'),
+    path('productos/', panel_admin_views.lista_productos_admin, name='lista_productos_admin'),
+    path('productos/crear/', panel_admin_views.crear_producto, name='crear_producto'),
+    path('productos/eliminar/<int:producto_id>/', panel_admin_views.eliminar_producto, name='eliminar_producto'),
 ]
 
+# Esto permite servir archivos estáticos y media en modo DEBUG
 if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

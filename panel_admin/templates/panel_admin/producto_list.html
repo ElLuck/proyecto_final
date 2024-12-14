@@ -1,0 +1,32 @@
+{% extends 'panel_admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Lista de Productos</h2>
+<a href="{% url 'panel_admin:producto_create' %}" class="btn btn-primary">Crear Producto</a>
+<table>
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Categoría</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for producto in productos %}
+        <tr>
+            <td>{{ producto.titulo }}</td>
+            <td>{{ producto.precio }}</td>
+            <td>{{ producto.cantidad }}</td>
+            <td>{{ producto.categoria.nombre }}</td>
+            <td>
+                <a href="{% url 'panel_admin:producto_update' producto.pk %}">Editar</a> |
+                <a href="{% url 'panel_admin:producto_delete' producto.pk %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+ {% endblock %}

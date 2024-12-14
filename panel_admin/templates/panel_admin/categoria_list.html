@@ -1,0 +1,21 @@
+{% extends 'panel_admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Lista de Categorías</h2>
+<a href="{% url 'panel_admin:categoria_create' %}" class="btn btn-primary">Crear Categoría</a>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for categoria in categorias %}
+        <tr>
+            <td>{{ categoria.nombre }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

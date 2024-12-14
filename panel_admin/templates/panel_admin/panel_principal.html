@@ -1,0 +1,31 @@
+{% extends 'panel_admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <header>
+      <h1>Bienvenido al Panel de Administración</h1>
+  </header>
+  
+
+  <!-- Estadísticas -->
+  <section class="stats">
+      <div class="stat-card">
+          <h2>Total Categorías</h2>
+          <p>{{ total_categorias }}</p>
+      </div>
+      <div class="stat-card">
+          <h2>Total Productos</h2>
+          <p>{{ total_productos }}</p>
+      </div>
+      <div class="stat-card">
+          <h2>Total Pedidos</h2>
+          <p>{{ total_pedidos }}</p>
+      </div>
+      <div class="stat-card">
+          <h2>Total Ventas</h2>
+          <p>${{ total_ventas }}</p>
+      </div>
+  </section>
+</div>
+{% endblock %}
