@@ -52,6 +52,7 @@ urlpatterns = [
     path('pedidos/', panel_admin_views.gestion_pedidos, name='gestion_pedidos'),
     path('pedidos/aceptar/<int:pedido_id>/', panel_admin_views.aceptar_pedido, name='aceptar_pedido'),
     path('pedidos/rechazar/<int:pedido_id>/', panel_admin_views.rechazar_pedido, name='rechazar_pedido'),
+    path('ventas/generar_pdf/', panel_admin_views.generar_pdf_ventas, name='generar_pdf_ventas'),
 ]
 
 # Esto permite servir archivos estáticos y media en modo DEBUG

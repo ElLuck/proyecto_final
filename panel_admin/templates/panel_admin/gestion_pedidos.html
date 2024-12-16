@@ -126,6 +126,10 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <div>
+                <!-- Agregar un botón para generar el PDF -->
+                <a href="{% url 'generar_pdf_ventas' %}" class="btn btn-primary">Generar PDF de Ventas</a>
+            </div>
         </div>
     </section>
 

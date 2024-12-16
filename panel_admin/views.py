@@ -5,6 +5,13 @@ from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
 from tienda.forms import ProductoForm
+from xhtml2pdf import pisa
+from datetime import datetime
+from django.db.models import Sum
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.db.models.functions import TruncWeek
+from django.template.loader import render_to_string
 
 # Vista principal del panel
 def panel_principal(request):
@@ -144,3 +151,26 @@ def rechazar_pedido(request, pedido_id):
         pedido.save()
         messages.success(request, f"Pedido {pedido.id} rechazado exitosamente.")
     return redirect('gestion_pedidos')
+
+def generar_pdf_ventas(request):
+    # Filtramos los pedidos aceptados
+    pedidos_aceptados = Pedido.objects.filter(estado='aceptado')
+
+    # Sumar el total de todas las ventas
+    total_ventas = pedidos_aceptados.aggregate(total=Sum('total'))['total'] or 0
+
+    # Renderizar la plantilla HTML con las ventas
+    html_string = render_to_string('panel_admin/ventas_resumen_pdf.html', {
+        'pedidos_aceptados': pedidos_aceptados,
+        'total_ventas': total_ventas,
+    })
+
+    # Generar el PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="resumen_ventas.pdf"'
+    
+    # Convertir HTML a PDF usando xhtml2pdf
+    pisa_status = pisa.CreatePDF(html_string, dest=response)
+    if pisa_status.err:
+        return HttpResponse('Error al generar el PDF')
+    return response
