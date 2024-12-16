@@ -1,16 +1,22 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from tienda.models import Categoria, Producto, Pedido, Venta
-from django.db import models  # Añadir esta importación
+from django.db import models
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
-# Vista principal del panel
+from tienda.forms import ProductoForm
+
 # Vista principal del panel
 def panel_principal(request):
     total_categorias = Categoria.objects.count()
     total_productos = Producto.objects.count()
     total_pedidos = Pedido.objects.count()
     total_ventas = Venta.objects.aggregate(total=models.Sum('total'))['total'] or 0  # Total de ventas
+
+    # Obtener el número de pedidos en cada estado
+    pedidos_en_proceso = Pedido.objects.filter(estado='pendiente').count()
+    pedidos_aceptados = Pedido.objects.filter(estado='aceptado').count()
+    pedidos_rechazados = Pedido.objects.filter(estado='rechazado').count()
 
     # Obtener productos para mostrarlos en el panel
     productos = Producto.objects.select_related('categoria').all()
@@ -20,7 +26,10 @@ def panel_principal(request):
         'total_productos': total_productos,
         'total_pedidos': total_pedidos,
         'total_ventas': total_ventas,
-        'productos': productos  # Pasar los productos al template
+        'productos': productos,
+        'pedidos_en_proceso': pedidos_en_proceso,
+        'pedidos_aceptados': pedidos_aceptados,
+        'pedidos_rechazados': pedidos_rechazados,
     })
 
 # Gestión de categorías
@@ -89,6 +98,18 @@ def eliminar_producto(request, producto_id):
         return redirect('lista_productos_admin')
     return render(request, 'panel_admin/producto_confirm_delete.html', {'producto': producto})
 
+def actualizar_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    if request.method == 'POST':
+        form = ProductoForm(request.POST, instance=producto)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Producto {producto.titulo} actualizado correctamente.")
+            return redirect('lista_productos_admin')
+    else:
+        form = ProductoForm(instance=producto)
+    return render(request, 'panel_admin/producto_list.html', {'form': form})
+
 @login_required
 def gestion_pedidos(request):
     pedidos_espera = Pedido.objects.filter(estado='pendiente')
@@ -105,7 +126,7 @@ def gestion_pedidos(request):
         'pedidos_rechazados': pedidos_rechazados,
         'productos_dict': productos_dict,  # Pasar los productos al contexto
     })
-    
+
 @login_required
 def aceptar_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id, estado='pendiente')

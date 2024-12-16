@@ -35,6 +35,28 @@
       </div>
   </section>
 
+  <!-- Nueva sección de pedidos -->
+  <section class="stats row mb-4">
+      <div class="col-md-4 mb-3">
+          <div class="stat-card bg-info text-white p-4 rounded">
+              <h4>Pedidos en Proceso</h4>
+              <p>{{ pedidos_en_proceso }}</p>
+          </div>
+      </div>
+      <div class="col-md-4 mb-3">
+          <div class="stat-card bg-success text-white p-4 rounded">
+              <h4>Pedidos Aceptados</h4>
+              <p>{{ pedidos_aceptados }}</p>
+          </div>
+      </div>
+      <div class="col-md-4 mb-3">
+          <div class="stat-card bg-danger text-white p-4 rounded">
+              <h4>Pedidos Rechazados</h4>
+              <p>{{ pedidos_rechazados }}</p>
+          </div>
+      </div>
+  </section>
+
   <!-- Mostrar productos existentes -->
   <h3 class="mb-4">Productos Existentes</h3>
   <table class="table table-striped table-bordered table-hover">

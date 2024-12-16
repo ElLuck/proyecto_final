@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from .models import Producto
 
 class PedidoForm(forms.Form):
     direccion = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -39,3 +40,8 @@ class LoginForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña'}),
         label="Contraseña"
     )
+    
+class ProductoForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = ['cantidad']  # Solo el campo de cantidad para actualizar el stock
