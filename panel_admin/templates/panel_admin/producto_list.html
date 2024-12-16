@@ -52,7 +52,8 @@
                       </td>
                       <td>
                           <a href="{% url 'actualizar_producto' producto.id %}" class="btn btn-info btn-sm">Editar</a>
-                          <a href="{% url 'eliminar_producto' producto.id %}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal{{ producto.id }}">Eliminar</a>
+                          <!-- Botón para abrir el modal de eliminación -->
+                          <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal{{ producto.id }}">Eliminar</a>
                       </td>
                   </tr>
               {% empty %}
@@ -79,6 +80,7 @@
                     ¿Estás seguro de que deseas eliminar el producto "{{ producto.titulo }}"?
                 </div>
                 <div class="modal-footer">
+                    <!-- Formulario de eliminación -->
                     <form method="POST" action="{% url 'eliminar_producto' producto.id %}">
                         {% csrf_token %}
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

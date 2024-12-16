@@ -99,10 +99,13 @@ def crear_producto(request):
 
 def eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
+    
     if request.method == 'POST':
-        producto.delete()
+        producto.delete()  # Eliminar el producto
         messages.success(request, 'Producto eliminado exitosamente.')
-        return redirect('lista_productos_admin')
+        return redirect('lista_productos_admin')  # Redirigir a la lista de productos
+    
+    # Si no es un POST, simplemente renderizamos el modal de confirmación
     return render(request, 'panel_admin/producto_confirm_delete.html', {'producto': producto})
 
 def actualizar_producto(request, producto_id):
