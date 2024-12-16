@@ -142,9 +142,9 @@ LOGOUT_REDIRECT_URL = '/'  # Opcional: dónde redirigir después de cerrar sesi�
 LOGIN_URL='/login/'
 # Configuración básica para enviar correos (SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Cambia por el servidor que uses
-EMAIL_PORT = 587  # Puerto SMTP, suele ser 587 para TLS
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'sebaeriz6@gmail.com'  # Tu correo
-EMAIL_HOST_PASSWORD = 'btzifmkikzsymxtv'      # Contraseña
+EMAIL_USE_TLS = True   # Contraseña
 DEFAULT_FROM_EMAIL = 'tu-correo@example.com'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = 'dabf9af5a0a60d'
+EMAIL_HOST_PASSWORD = '8f449d2d1ab19a'
+EMAIL_PORT = '2525'
