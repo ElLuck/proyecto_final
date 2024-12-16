@@ -97,28 +97,49 @@ def crear_producto(request):
     
     return render(request, 'panel_admin/producto_form.html', {'categorias': categorias})
 
+@login_required
 def eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
-    
-    if request.method == 'POST':
-        producto.delete()  # Eliminar el producto
-        messages.success(request, 'Producto eliminado exitosamente.')
-        return redirect('lista_productos_admin')  # Redirigir a la lista de productos
-    
-    # Si no es un POST, simplemente renderizamos el modal de confirmación
-    return render(request, 'panel_admin/producto_confirm_delete.html', {'producto': producto})
+    producto.delete()
+    messages.success(request, f'El producto "{producto.titulo}" ha sido eliminado.')
+    return redirect('lista_productos_admin')
 
 def actualizar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
+    categorias = Categoria.objects.all()
+
     if request.method == 'POST':
-        form = ProductoForm(request.POST, instance=producto)
-        if form.is_valid():
-            form.save()
-            messages.success(request, f"Producto {producto.titulo} actualizado correctamente.")
-            return redirect('lista_productos_admin')
-    else:
-        form = ProductoForm(instance=producto)
-    return render(request, 'panel_admin/producto_list.html', {'form': form})
+        titulo = request.POST.get('titulo')
+        descripcion = request.POST.get('descripcion')
+        precio = request.POST.get('precio')
+        cantidad = request.POST.get('cantidad')
+        categoria_id = request.POST.get('categoria')
+        nueva_categoria = request.POST.get('nueva_categoria')
+
+        # Manejar la categoría seleccionada o nueva
+        if nueva_categoria:
+            categoria, created = Categoria.objects.get_or_create(nombre=nueva_categoria)
+        else:
+            categoria = get_object_or_404(Categoria, id=categoria_id)
+
+        # Manejar la imagen
+        imagen = request.FILES.get('imagen')
+        if imagen:
+            producto.imagen = imagen
+
+        # Actualizar los datos del producto
+        producto.titulo = titulo
+        producto.descripcion = descripcion
+        producto.precio = precio
+        producto.cantidad = cantidad
+        producto.categoria = categoria
+        producto.save()
+
+        messages.success(request, f"Producto '{producto.titulo}' actualizado correctamente.")
+        return redirect('lista_productos_admin')
+
+    return render(request, 'panel_admin/producto_form.html', {'producto': producto, 'categorias': categorias})
+
 
 @login_required
 def gestion_pedidos(request):

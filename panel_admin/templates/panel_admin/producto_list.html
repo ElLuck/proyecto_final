@@ -80,12 +80,9 @@
                     ¿Estás seguro de que deseas eliminar el producto "{{ producto.titulo }}"?
                 </div>
                 <div class="modal-footer">
-                    <!-- Formulario de eliminación -->
-                    <form method="POST" action="{% url 'eliminar_producto' producto.id %}">
-                        {% csrf_token %}
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
+                    <!-- Botón directo con confirmación -->
+                    <a href="{% url 'eliminar_producto' producto.id %}" 
+                    class="btn btn-danger btn-sm" 
                 </div>
             </div>
         </div>

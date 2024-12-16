@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container">
   <header>
-    <h1>Crear Nuevo Producto</h1>
+    <h1>{% if producto %}Editar Producto{% else %}Crear Nuevo Producto{% endif %}</h1>
   </header>
 
   <form method="POST" enctype="multipart/form-data">
@@ -12,22 +12,25 @@
     
     <div class="form-group">
       <label for="titulo">Título del Producto</label>
-      <input type="text" class="form-control" id="titulo" name="titulo" required>
+      <input type="text" class="form-control" id="titulo" name="titulo" 
+             value="{{ producto.titulo|default_if_none:'' }}" required>
     </div>
 
     <div class="form-group">
       <label for="descripcion">Descripción</label>
-      <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+      <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required>{{ producto.descripcion|default_if_none:'' }}</textarea>
     </div>
 
     <div class="form-group">
       <label for="precio">Precio</label>
-      <input type="number" class="form-control" id="precio" name="precio" step="0.01" required>
+      <input type="number" class="form-control" id="precio" name="precio" 
+             value="{{ producto.precio|default_if_none:'' }}" step="0.01" required>
     </div>
 
     <div class="form-group">
       <label for="cantidad">Cantidad</label>
-      <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+      <input type="number" class="form-control" id="cantidad" name="cantidad" 
+             value="{{ producto.cantidad|default_if_none:'' }}" required>
     </div>
 
     <div class="form-group">
@@ -35,22 +38,30 @@
       <select class="form-control" id="categoria" name="categoria">
         <option value="">Seleccione una categoría</option>
         {% for categoria in categorias %}
-          <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+          <option value="{{ categoria.id }}" 
+                  {% if producto and producto.categoria.id == categoria.id %}selected{% endif %}>
+            {{ categoria.nombre }}
+          </option>
         {% endfor %}
       </select>
     </div>
 
     <div class="form-group">
       <label for="nueva_categoria">O crear nueva categoría</label>
-      <input type="text" class="form-control" id="nueva_categoria" name="nueva_categoria" placeholder="Escriba el nombre de una nueva categoría">
+      <input type="text" class="form-control" id="nueva_categoria" name="nueva_categoria" 
+             placeholder="Escriba el nombre de una nueva categoría">
     </div>
 
     <div class="form-group">
       <label for="imagen">Imagen del Producto</label>
       <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+      {% if producto.imagen %}
+        <p>Imagen actual:</p>
+        <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" style="width: 100px; height: 100px; object-fit: cover;">
+      {% endif %}
     </div>
 
-    <button type="submit" class="btn btn-primary">Crear Producto</button>
+    <button type="submit" class="btn btn-primary">{% if producto %}Guardar Cambios{% else %}Crear Producto{% endif %}</button>
   </form>
 </div>
 {% endblock %}
