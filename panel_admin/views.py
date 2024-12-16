@@ -3,6 +3,7 @@ from tienda.models import Categoria, Producto, Pedido, Venta
 from django.db import models  # Añadir esta importación
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.decorators import login_required
 # Vista principal del panel
 # Vista principal del panel
 def panel_principal(request):
@@ -87,3 +88,38 @@ def eliminar_producto(request, producto_id):
         messages.success(request, 'Producto eliminado exitosamente.')
         return redirect('lista_productos_admin')
     return render(request, 'panel_admin/producto_confirm_delete.html', {'producto': producto})
+
+@login_required
+def gestion_pedidos(request):
+    pedidos_espera = Pedido.objects.filter(estado='pendiente')
+    pedidos_aceptados = Pedido.objects.filter(estado='aceptado')
+    pedidos_rechazados = Pedido.objects.filter(estado='rechazado')
+    
+    # Obtener todos los productos y crear un diccionario con el id como clave
+    productos = Producto.objects.all()
+    productos_dict = {producto.id: producto for producto in productos}
+
+    return render(request, 'panel_admin/gestion_pedidos.html', {
+        'pedidos_espera': pedidos_espera,
+        'pedidos_aceptados': pedidos_aceptados,
+        'pedidos_rechazados': pedidos_rechazados,
+        'productos_dict': productos_dict,  # Pasar los productos al contexto
+    })
+    
+@login_required
+def aceptar_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id, estado='pendiente')
+    if request.method == 'POST':
+        pedido.estado = 'aceptado'
+        pedido.save()
+        messages.success(request, f"Pedido {pedido.id} aceptado exitosamente.")
+    return redirect('gestion_pedidos')
+
+@login_required
+def rechazar_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id, estado='pendiente')
+    if request.method == 'POST':
+        pedido.estado = 'rechazado'
+        pedido.save()
+        messages.success(request, f"Pedido {pedido.id} rechazado exitosamente.")
+    return redirect('gestion_pedidos')

@@ -1,0 +1,140 @@
+{% extends 'panel_admin/base.html' %}
+{% load static %}
+{% load templatetags %}
+{% block content %}
+
+<div class="container mt-4">
+    <header>
+        <h1>Gestión de Pedidos</h1>
+    </header>
+
+    <!-- Pedidos en espera -->
+    <section class="mt-4">
+        <h2>Pedidos en Espera</h2>
+        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cliente</th>
+                        <th>Productos</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos_espera %}
+                    <tr>
+                        <td>{{ pedido.id }}</td>
+                        <td>{{ pedido.usuario.username }}</td>
+                        <td>
+                            <ul>
+                                {% for producto_id, producto_data in pedido.productos.items %}
+                                    {% with producto=productos_dict|get:producto_id %}
+                                        <li>{{ producto_data.titulo }} ({{ producto_data.cantidad }})</li>
+                                    {% endwith %}
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>${{ pedido.total }}</td>
+                        <td>
+                            <form method="post" action="{% url 'aceptar_pedido' pedido.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm">Aceptar</button>
+                            </form>
+                            <form method="post" action="{% url 'rechazar_pedido' pedido.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No hay pedidos en espera.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Pedidos aceptados -->
+    <section class="mt-4">
+        <h2>Pedidos Aceptados</h2>
+        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+            <table class="table table-success table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cliente</th>
+                        <th>Productos</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos_aceptados %}
+                    <tr>
+                        <td>{{ pedido.id }}</td>
+                        <td>{{ pedido.usuario.username }}</td>
+                        <td>
+                            <ul>
+                                {% for producto_id, producto_data in pedido.productos.items %}
+                                    {% with producto=productos_dict|get:producto_id %}
+                                        <li>{{ producto_data.titulo }} ({{ producto_data.cantidad }})</li>
+                                    {% endwith %}
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>${{ pedido.total }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">No hay pedidos aceptados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Pedidos rechazados -->
+    <section class="mt-4">
+        <h2>Pedidos Rechazados</h2>
+        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+            <table class="table table-danger table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cliente</th>
+                        <th>Productos</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos_rechazados %}
+                    <tr>
+                        <td>{{ pedido.id }}</td>
+                        <td>{{ pedido.usuario.username }}</td>
+                        <td>
+                            <ul>
+                                {% for producto_id, producto_data in pedido.productos.items %}
+                                    {% with producto=productos_dict|get:producto_id %}
+                                        <li>{{ producto_data.titulo }} ({{ producto_data.cantidad }})</li>
+                                    {% endwith %}
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>${{ pedido.total }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">No hay pedidos rechazados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
