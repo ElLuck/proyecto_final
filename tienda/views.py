@@ -237,7 +237,7 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         # Redirigir al panel de administración si el usuario es un administrador
         if self.request.user.is_staff:
-            return '/admin/'  # Redirigir a la página de administración de Django
+            return '/panel_principal/'  # Redirigir a la página de administración de Django
         # Si no es admin, redirigir a la URL predeterminada
         return super().get_success_url()
     
