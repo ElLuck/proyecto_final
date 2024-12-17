@@ -44,11 +44,11 @@
                       <td>${{ producto.precio }}</td>
                       <td>
                           <!-- Formulario para actualizar la cantidad -->
-                            {% comment %} <form method="POST" action="{% url 'actualizar_producto' producto.id %}" class="d-inline">
+                            <form method="POST" action="{% url 'actualizar_producto' producto.id %}" class="d-inline">
                                 {% csrf_token %}
-                                <input type="number" name="cantidad" value="{{ producto.cantidad }}" min="0" class="form-control" style="width: 80px;">
+                                <h3 name="cantidad" value="{{ producto.cantidad }}" min="0" class="form-control" style="width: 80px;"></h3>
                                 <button type="submit" class="btn btn-warning ml-2">Actualizar</button>
-                            </form> {% endcomment %}
+                            </form>
                       </td>
                       <td>
                           <a href="{% url 'actualizar_producto' producto.id %}" class="btn btn-info btn-sm">Editar</a>
