@@ -53,7 +53,7 @@
                       <td>
                           <a href="{% url 'actualizar_producto' producto.id %}" class="btn btn-info btn-sm">Editar</a>
                           <!-- Botón para abrir el modal de eliminación -->
-                          <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal{{ producto.id }}">Eliminar</a>
+                          <a href="{% url 'eliminar_producto' producto.id %}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal{{ producto.id }}">Eliminar</a>
                       </td>
                   </tr>
               {% empty %}
