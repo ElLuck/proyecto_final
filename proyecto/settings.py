@@ -136,7 +136,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/')
 LOGIN_REDIRECT_URL = '/'  # Cambia a la URL donde quieres redirigir
 LOGOUT_REDIRECT_URL = '/'  # Opcional: dónde redirigir después de cerrar sesión
 LOGIN_URL='/login/'
