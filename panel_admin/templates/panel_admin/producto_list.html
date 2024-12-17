@@ -42,18 +42,11 @@
                       <td>{{ producto.titulo }}</td>
                       <td>{{ producto.categoria.nombre }}</td>
                       <td>${{ producto.precio }}</td>
-                      <td>
-                          <!-- Formulario para actualizar la cantidad -->
-                          <form method="POST" action="{% url 'actualizar_producto' producto.id %}" class="d-inline">
-                              {% csrf_token %}
-                              <input type="number" name="cantidad" value="{{ producto.cantidad }}" min="0" class="form-control" style="width: 80px;">
-                              <button type="submit" class="btn btn-warning ml-2">Actualizar</button>
-                          </form>
-                      </td>
+                    
                       <td>
                           <a href="{% url 'actualizar_producto' producto.id %}" class="btn btn-info btn-sm">Editar</a>
                           <!-- Botón para abrir el modal de eliminación -->
-                          <a href="{% url 'eliminar_producto' producto.id %}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal{{ producto.id }}">Eliminar</a>
+                          <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal{{ producto.id }}">Eliminar</a>
                       </td>
                   </tr>
               {% empty %}
@@ -81,7 +74,7 @@
                 </div>
                 <div class="modal-footer">
                     <!-- Botón directo con confirmación -->
-                    <a href="{% url 'eliminar_producto' producto.id %}" >
+                    <a href="{% url 'eliminar_producto' producto.id %}"> 
                     class="btn btn-danger btn-sm" 
                 </div>
             </div>
