@@ -16,7 +16,7 @@
       content="Matrix Admin Lite Free Version is powerful and clean admin dashboard template, inpired from Bootstrap Framework"
     />
     <meta name="robots" content="noindex,nofollow" />
-    <title>Matrix Admin Lite Free Versions Template by WrapPixel</title>
+    <title>Panel de Administrador</title>
     <!-- Favicon icon -->
     <link
       rel="icon"
@@ -145,6 +145,13 @@
                   href="{% url 'crear_producto' %}"
                   aria-expanded="false"
                   ><i class="mdi mdi-relative-scale"></i><span class="hide-menu">Agregar Producto</span></a>
+              </li>
+
+              <li class="sidebar-item">
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-logout">Cerrar Sesión</button>
+                </form>
               </li>
       
               

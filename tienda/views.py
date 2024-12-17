@@ -52,7 +52,13 @@ def agregar_al_carrito(request, producto_id):
         # Obtener el producto desde la base de datos
         producto = Producto.objects.get(id=producto_id)
     except Producto.DoesNotExist:
+        messages.error(request, "El producto no existe.")
         return redirect('lista_productos')
+
+    # Verificar que haya stock disponible
+    if producto.cantidad <= 0:
+        messages.error(request, "Este producto no tiene stock disponible.")
+        return redirect('lista_productos')  # Cambiar a la URL adecuada
 
     # Obtener el carrito desde la sesión (o uno vacío si no existe)
     carrito = request.session.get('carrito', {})
@@ -70,9 +76,10 @@ def agregar_al_carrito(request, producto_id):
             'precio': precio_producto,
             'cantidad': 1
         }
-    if producto.cantidad <= 0:
-        messages.error(request, "Este producto no tiene stock disponible.")
-        return redirect('lista_productos')  # Cambia esto a la URL adecuada
+
+    # Descontar 1 del stock del producto
+    producto.cantidad -= 1
+    producto.save()
 
     # Guardar el carrito actualizado en la sesión
     request.session['carrito'] = carrito
@@ -88,6 +95,7 @@ def agregar_al_carrito(request, producto_id):
 
     # Redirigir al usuario a la página anterior
     return redirect(request.META.get('HTTP_REFERER'))
+
 
 
 
